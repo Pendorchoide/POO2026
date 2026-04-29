@@ -5,33 +5,31 @@ public class Empleado {
     private int dni;
     private float sueldo;
 
-    Empleado(String nombre, int dni, float sueldo){
+    public Empleado(String nombre, int dni, float sueldo) {
         this.nombre = nombre;
         this.dni = dni;
         establecerSueldo(sueldo);
     }
 
-    public float getSueldo(){
-        return this.sueldo;
+    public String getNombre() {
+        return nombre;
     }
 
-        public float getDNI(){
-        return this.dni;
+    public int getDni() {
+        return dni;
     }
 
-    private void establecerSueldo(float sueldo){
+    public float getSueldo() {
+        return sueldo;
+    }
+
+    private void establecerSueldo(float sueldo) {
         final float SALARIO_MINIMO = 300.00f;
-
-        if (sueldo < SALARIO_MINIMO) {
-            this.sueldo = SALARIO_MINIMO;
-        }
-        else{
-            this.sueldo = sueldo;
-        }
+        this.sueldo = sueldo < SALARIO_MINIMO ? SALARIO_MINIMO : sueldo;
     }
 
     @Override
     public String toString() {
-        return "Nombre: "+ this.nombre + "\nDNI: " + this.dni + "\nSueldo: " + this.sueldo;
+        return "Nombre: " + nombre + ", DNI: " + dni + ", Sueldo: " + sueldo;
     }
 }
