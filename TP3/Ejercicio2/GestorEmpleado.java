@@ -1,49 +1,59 @@
 package TP3.Ejercicio2;
+
 import java.util.ArrayList;
 
 public class GestorEmpleado {
-    private ArrayList<Empleado> empleados = new ArrayList<>();
+    private ArrayList<Empleado> empleados;
 
-    public void regitrarEmpleado(Empleado empleado){
+    public GestorEmpleado() {
+        empleados = new ArrayList<>();
+    }
+
+    public void registrarEmpleado(Empleado empleado) {
         empleados.add(empleado);
     }
 
-    public void quitarEmpleado(int dni){
-        empleados.remove(buscarEmpleadoDNI(dni));
+    public boolean quitarEmpleado(int dni) {
+        Empleado empleado = buscarEmpleadoDNI(dni);
+        if (empleado == null) {
+            return false;
+        }
+        empleados.remove(empleado);
+        return true;
     }
 
-    public Empleado buscarEmpleadoDNI(int dni){
-        for (Empleado e : empleados){
-            if(e.getDNI() == dni){
+    public Empleado buscarEmpleadoDNI(int dni) {
+        for (Empleado e : empleados) {
+            if (e.getDni() == dni) {
                 return e;
             }
         }
         return null;
     }
 
-    public Empleado empleadoQueMasGana(){
-        if (empleados.size() == 0){
+    public Empleado empleadoQueMasGana() {
+        if (empleados.isEmpty()) {
             return null;
         }
-        Empleado resultado = this.empleados.getFirst();
-        for (Empleado e : this.empleados){
-            if (e.getSueldo() > resultado.getSueldo()){
-                resultado = e;
+        Empleado mejor = empleados.get(0);
+        for (Empleado e : empleados) {
+            if (e.getSueldo() > mejor.getSueldo()) {
+                mejor = e;
             }
         }
-        return resultado;
+        return mejor;
     }
 
-    public float sueldoPromedio(){
-        if (empleados.size() == 0){
-            return 0;
+    public float sueldoPromedio() {
+        if (empleados.isEmpty()) {
+            return 0f;
         }
-        
-        float total =0f;
-        for (Empleado e : this.empleados){
+
+        float total = 0f;
+        for (Empleado e : empleados) {
             total += e.getSueldo();
         }
-        return total/empleados.size();
+        return total / empleados.size();
     }
 
     public ArrayList<Empleado> getEmpleados() {
