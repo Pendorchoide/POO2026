@@ -57,17 +57,20 @@ public class Main {
         int dni = scanner.nextInt();
         scanner.nextLine();
 
-        if (gestor.existeEmpleadoDNI(dni)) {
-            System.out.println("Error: ya existe un empleado con el mismo DNI.");
-            return;
-        }
-
         System.out.print("Ingrese el sueldo del empleado: ");
-        float sueldo = scanner.nextFloat();
+        double sueldo = scanner.nextDouble();
         scanner.nextLine();
 
         Empleado empleado = new Empleado(nombre, dni, sueldo);
-        gestor.registrarEmpleado(empleado);
+        
+        if (!gestor.registrarEmpleado(empleado)) {
+            System.out.println("Error: ya existe un empleado con el mismo DNI.");
+            return;
+        }
+        
+        if (empleado.fueAjustado()) {
+            System.out.println("Advertencia: El sueldo se ajustó al salario mínimo de 300.00.");
+        }
         System.out.println("Empleado registrado correctamente.");
     }
 
@@ -90,10 +93,10 @@ public class Main {
     }
 
     private static void mostrarPromedioSueldo(GestorEmpleado gestor) {
-        float promedio = gestor.sueldoPromedio();
         if (gestor.getEmpleados().isEmpty()) {
             System.out.println("No hay empleados para calcular el promedio.");
         } else {
+            double promedio = gestor.sueldoPromedio();
             System.out.println("El sueldo promedio es: " + promedio);
         }
     }
