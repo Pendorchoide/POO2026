@@ -13,13 +13,15 @@ public class GestorEmpleado {
         empleados.add(empleado);
     }
 
-    public boolean quitarEmpleado(int dni) {
+    public boolean existeEmpleadoDNI(int dni) {
+        return buscarEmpleadoDNI(dni) != null;
+    }
+
+    public void quitarEmpleado(int dni) {
         Empleado empleado = buscarEmpleadoDNI(dni);
-        if (empleado == null) {
-            return false;
+        if (empleado != null) {
+            empleados.remove(empleado);
         }
-        empleados.remove(empleado);
-        return true;
     }
 
     public Empleado buscarEmpleadoDNI(int dni) {

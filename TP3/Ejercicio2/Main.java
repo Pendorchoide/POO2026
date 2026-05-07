@@ -57,13 +57,17 @@ public class Main {
         int dni = scanner.nextInt();
         scanner.nextLine();
 
+        if (gestor.existeEmpleadoDNI(dni)) {
+            System.out.println("Error: ya existe un empleado con el mismo DNI.");
+            return;
+        }
+
         System.out.print("Ingrese el sueldo del empleado: ");
         float sueldo = scanner.nextFloat();
         scanner.nextLine();
 
         Empleado empleado = new Empleado(nombre, dni, sueldo);
         gestor.registrarEmpleado(empleado);
-
         System.out.println("Empleado registrado correctamente.");
     }
 
@@ -76,12 +80,13 @@ public class Main {
         int dni = scanner.nextInt();
         scanner.nextLine();
 
-        boolean eliminado = gestor.quitarEmpleado(dni);
-        if (eliminado) {
-            System.out.println("Empleado quitado correctamente.");
-        } else {
+        if (!gestor.existeEmpleadoDNI(dni)) {
             System.out.println("Empleado no encontrado.");
+            return;
         }
+
+        gestor.quitarEmpleado(dni);
+        System.out.println("Empleado quitado correctamente.");
     }
 
     private static void mostrarPromedioSueldo(GestorEmpleado gestor) {
