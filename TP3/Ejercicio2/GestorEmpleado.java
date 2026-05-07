@@ -28,7 +28,7 @@ public class GestorEmpleado {
         }
     }
 
-    public Empleado buscarEmpleadoDNI(int dni) {
+    private Empleado buscarEmpleadoDNI(int dni) {
         for (Empleado e : empleados) {
             if (e.getDni() == dni) {
                 return e;

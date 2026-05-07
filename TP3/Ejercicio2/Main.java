@@ -9,10 +9,7 @@ public class Main {
 
         while (true) {
             System.out.println(Vistas.obtenerMenu());
-            System.out.print("Seleccione una opción: ");
-
-            int opcion = scanner.nextInt();
-            scanner.nextLine();
+            int opcion = leerOpcionValida(scanner);
 
             switch (opcion) {
                 case 1:
@@ -49,17 +46,70 @@ public class Main {
         System.out.flush();
     }
 
+    private static int leerOpcionValida(Scanner scanner) {
+        while (true) {
+            System.out.print("Seleccione una opción: ");
+            if (scanner.hasNextInt()) {
+                int opcion = scanner.nextInt();
+                scanner.nextLine();
+                return opcion;
+            }
+            System.err.println("Error: opción inválida. Ingrese un número válido.");
+            scanner.nextLine();
+        }
+    }
+
+    private static int leerEnteroValido(Scanner scanner, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            if (scanner.hasNextInt()) {
+                int valor = scanner.nextInt();
+                scanner.nextLine();
+                return valor;
+            }
+            System.err.println("Error: debe ingresar un número entero válido.");
+            scanner.nextLine();
+        }
+    }
+
+    private static int leerDniValido(Scanner scanner, String mensaje) {
+        while (true) {
+            int valor = leerEnteroValido(scanner, mensaje);
+            if (valor > 0) {
+                return valor;
+            }
+            System.err.println("Error: el DNI debe ser un número positivo.");
+        }
+    }
+
+    private static double leerDoubleValido(Scanner scanner, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            if (scanner.hasNextDouble()) {
+                double valor = scanner.nextDouble();
+                scanner.nextLine();
+                return valor;
+            }
+            System.err.println("Error: debe ingresar un número válido (por ejemplo, 1200.50).");
+            scanner.nextLine();
+        }
+    }
+
+    private static String leerTextoNoVacio(Scanner scanner, String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String texto = scanner.nextLine().trim();
+            if (!texto.isEmpty()) {
+                return texto;
+            }
+            System.err.println("Error: el texto no puede estar vacío.");
+        }
+    }
+
     private static void registrarEmpleado(GestorEmpleado gestor, Scanner scanner) {
-        System.out.print("Ingrese el nombre del empleado: ");
-        String nombre = scanner.nextLine();
-
-        System.out.print("Ingrese el DNI del empleado: ");
-        int dni = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Ingrese el sueldo del empleado: ");
-        double sueldo = scanner.nextDouble();
-        scanner.nextLine();
+        String nombre = leerTextoNoVacio(scanner, "Ingrese el nombre del empleado: ");
+        int dni = leerDniValido(scanner, "Ingrese el DNI del empleado: ");
+        double sueldo = leerDoubleValido(scanner, "Ingrese el sueldo del empleado: ");
 
         Empleado empleado = new Empleado(nombre, dni, sueldo);
         
@@ -79,9 +129,7 @@ public class Main {
     }
 
     private static void quitarEmpleado(GestorEmpleado gestor, Scanner scanner) {
-        System.out.print("Ingrese el DNI del empleado a quitar: ");
-        int dni = scanner.nextInt();
-        scanner.nextLine();
+        int dni = leerDniValido(scanner, "Ingrese el DNI del empleado a quitar: ");
 
         if (!gestor.existeEmpleadoDNI(dni)) {
             System.out.println("Empleado no encontrado.");
