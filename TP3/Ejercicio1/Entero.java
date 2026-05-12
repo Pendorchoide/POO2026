@@ -24,7 +24,10 @@ public class Entero {
 
     public long factorial() {
         if (numero < 0){
-            return -1;
+            return -1;  // Devuelve -1 para indicar que no se puede calcular el factorial de un número negativo
+        }
+        if (numero == 0 || numero == 1) {
+            return 1; // El factorial de 0 y 1 es 1
         }
         long fac = numero;
         for (int i = numero; i > 1; i--){
@@ -36,11 +39,11 @@ public class Entero {
     // Determinar si n es primo
 
     public boolean esPrimo(){
-        if ((numero % 2 == 0) && (numero < 2)){
-            return false;
-        }
+        if (numero < 2) return false;
+        if (numero == 2) return true;
+        if (numero % 2 == 0) return false;
 
-        for (int i = (int) Math.ceil(Math.sqrt(numero)); i > 1; i--){
+        for (int i = 3; i <= Math.sqrt(numero); i += 2){
             if ((numero % i ) == 0) {
                 return false;
             }

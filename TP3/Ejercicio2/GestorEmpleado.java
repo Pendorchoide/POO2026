@@ -9,20 +9,26 @@ public class GestorEmpleado {
         empleados = new ArrayList<>();
     }
 
-    public void registrarEmpleado(Empleado empleado) {
-        empleados.add(empleado);
-    }
-
-    public boolean quitarEmpleado(int dni) {
-        Empleado empleado = buscarEmpleadoDNI(dni);
-        if (empleado == null) {
-            return false;
+    public boolean registrarEmpleado(Empleado empleado) {
+        if (existeEmpleadoDNI(empleado.getDni())) {
+            return false; // No registrar si ya existe
         }
-        empleados.remove(empleado);
+        empleados.add(empleado);
         return true;
     }
 
-    public Empleado buscarEmpleadoDNI(int dni) {
+    public boolean existeEmpleadoDNI(int dni) {
+        return buscarEmpleadoDNI(dni) != null;
+    }
+
+    public void quitarEmpleado(int dni) {
+        Empleado empleado = buscarEmpleadoDNI(dni);
+        if (empleado != null) {
+            empleados.remove(empleado);
+        }
+    }
+
+    private Empleado buscarEmpleadoDNI(int dni) {
         for (Empleado e : empleados) {
             if (e.getDni() == dni) {
                 return e;
@@ -44,12 +50,12 @@ public class GestorEmpleado {
         return mejor;
     }
 
-    public float sueldoPromedio() {
+    public double sueldoPromedio() {
         if (empleados.isEmpty()) {
-            return 0f;
+            return 0.0;
         }
 
-        float total = 0f;
+        double total = 0.0;
         for (Empleado e : empleados) {
             total += e.getSueldo();
         }

@@ -3,9 +3,10 @@ package TP3.Ejercicio2;
 public class Empleado {
     private String nombre;
     private int dni;
-    private float sueldo;
+    private double sueldo;
+    private boolean ajustado;
 
-    public Empleado(String nombre, int dni, float sueldo) {
+    public Empleado(String nombre, int dni, double sueldo) {
         this.nombre = nombre;
         this.dni = dni;
         establecerSueldo(sueldo);
@@ -19,13 +20,23 @@ public class Empleado {
         return dni;
     }
 
-    public float getSueldo() {
+    public double getSueldo() {
         return sueldo;
     }
 
-    private void establecerSueldo(float sueldo) {
-        final float SALARIO_MINIMO = 300.00f;
-        this.sueldo = sueldo < SALARIO_MINIMO ? SALARIO_MINIMO : sueldo;
+    public boolean fueAjustado() {
+        return ajustado;
+    }
+
+    private void establecerSueldo(double sueldo) {
+        final double SALARIO_MINIMO = 300.00;
+        if (sueldo < SALARIO_MINIMO) {
+            this.sueldo = SALARIO_MINIMO;
+            this.ajustado = true;
+        } else {
+            this.sueldo = sueldo;
+            this.ajustado = false;
+        }
     }
 
     @Override
