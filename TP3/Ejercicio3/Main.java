@@ -21,7 +21,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         // 1. Países de un continente
-        System.out.println("Ingrese el nombre de un continente:");
+        System.out.println("Ingrese el nombre de un continente (America, Europa) para listar sus paises:");
         String nombreContinente = sc.nextLine();
 
         Continente cont = continentes.get(nombreContinente.toLowerCase());
@@ -36,7 +36,7 @@ public class Main {
         }
 
         // 2. Provincias de un país
-        System.out.println("\nIngrese el nombre de un país:");
+        System.out.println("\nIngrese el nombre de un país cualquiera para listar sus provincias:");
         String nombrePais = sc.nextLine();
 
         Pais pais = paises.get(nombrePais.toLowerCase());
@@ -51,7 +51,7 @@ public class Main {
         }
 
         // 3. Países limítrofes
-        System.out.println("\nIngrese el nombre de un país para ver sus limítrofes:");
+        System.out.println("\nIngrese el nombre de un país cualquiera para listar sus limítrofes:");
         String nombrePaisLim = sc.nextLine();
 
         Pais paisLim = paises.get(nombrePaisLim.toLowerCase());
@@ -66,7 +66,7 @@ public class Main {
         }
 
         // 4. Países ordenados por superficie
-        System.out.println("\nPresione una tecla para ver países ordenados por superficie...");
+        System.out.println("\nPresione una tecla para ver todos los países ordenados por superficie...");
         sc.nextLine();
         List<Pais> listaPaises = new ArrayList<>(paises.values());
 
@@ -78,6 +78,8 @@ public class Main {
         }
 
         // 5. Comparación de superficies
+        System.out.println("\nA continuacion se compararan las superficies de dos países:");
+
         System.out.println("\nIngrese el primer país:");
         String p1 = sc.nextLine();
 
