@@ -19,8 +19,11 @@ public class Main {
         }
 
         Scanner sc = new Scanner(System.in);
-
+        System.out.println("==============================================");
+        System.out.println("Bienvenido al sistema de información geográfica");
+        System.out.println("==============================================\n");
         // 1. Países de un continente
+        System.out.println("= Paises de un continente =");
         System.out.println("Ingrese el nombre de un continente (America, Europa) para listar sus paises:");
         String nombreContinente = sc.nextLine();
 
@@ -36,6 +39,7 @@ public class Main {
         }
 
         // 2. Provincias de un país
+        System.out.println("= Provincias de un país =");
         System.out.println("\nIngrese el nombre de un país cualquiera para listar sus provincias:");
         String nombrePais = sc.nextLine();
 
@@ -51,7 +55,8 @@ public class Main {
         }
 
         // 3. Países limítrofes
-        System.out.println("\nIngrese el nombre de un país cualquiera para listar sus limítrofes:");
+        System.out.println("\n= Países limítrofes =");
+        System.out.println("Ingrese el nombre de un país cualquiera para listar sus limítrofes:");
         String nombrePaisLim = sc.nextLine();
 
         Pais paisLim = paises.get(nombrePaisLim.toLowerCase());
@@ -66,7 +71,8 @@ public class Main {
         }
 
         // 4. Países ordenados por superficie
-        System.out.println("\nPresione una tecla para ver todos los países ordenados por superficie...");
+        System.out.println("\n= Países ordenados por superficie =");
+        System.out.println("Presione una tecla para ver todos los países ordenados por superficie...");
         sc.nextLine();
         List<Pais> listaPaises = new ArrayList<>(paises.values());
 
@@ -74,11 +80,12 @@ public class Main {
 
 
         for (Pais p : listaPaises) {
-            System.out.println(p.getNombre() + " - " + p.getSuperficie());
+            System.out.println(p.getNombre() + " - " + p.getSuperficie() + " km^2");
         }
 
         // 5. Comparación de superficies
-        System.out.println("\nA continuacion se compararan las superficies de dos países:");
+        System.out.println("\n= Comparación de superficies =");
+        System.out.println("A continuacion se compararan las superficies de dos países:");
 
         System.out.println("\nIngrese el primer país:");
         String p1 = sc.nextLine();
