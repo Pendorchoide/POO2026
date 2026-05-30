@@ -1,3 +1,4 @@
+package TP4.Ejercicio1;
 public class Motor {
     protected int cilindrada;
     protected String combustible;
