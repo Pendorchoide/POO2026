@@ -1,3 +1,4 @@
+package TP4.Ejercicio3.Parte_mala_practica;
 // Superclase con atributos expuestos a la jerarquía
 class Archivo {
     protected String nombre;
