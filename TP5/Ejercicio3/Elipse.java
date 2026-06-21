@@ -38,8 +38,20 @@ public class Elipse extends ElementoGrafico {
     }
 
     public void escalar(double factor) {
-        this.radioMenor *= factor;
-        this.radioMayor *= factor;
+        this.radioMenor *= Math.abs(factor);
+        this.radioMayor *= Math.abs(factor);
+
+        //si el factor es negativo, se invierte la elipse
+        if (factor < 0) {
+            double aux = radioMenor;
+            radioMenor = radioMayor;
+            radioMayor = aux;
+        }
+        //si el factor es cero, la elipse se convierte en un "punto"
+        if (factor == 0) {
+            radioMenor = 0;
+            radioMayor = 0;
+        }
     }
 
     @Override
