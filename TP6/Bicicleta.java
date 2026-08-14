@@ -5,7 +5,7 @@ public class Bicicleta implements ImpactoEcologico {
     private String marca;
     private String modelo;
     private double velocidadMaxima;
-    private String tipo; // Tipo de bicicleta (ruta, montaña, etc.)
+    private String tipo;
     
     public Bicicleta(String marca, String modelo, double velocidadMaxima, String tipo) {
         this.marca = marca;

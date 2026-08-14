@@ -32,7 +32,8 @@ public class Main {
             double impacto = objeto.getImpact();
             impactoTotal += impacto;
             
-            // Aqui no se hace uso de polimorfismo, ya que se necesita acceder a métodos específicos de cada clase para mostrar información adicional
+            // Aqui por ejemplo no se hace uso de polimorfismo, ya que se necesita acceder a métodos específicos de cada clase para mostrar información adicional
+            // Se hace uso también de downcasting para poder usar los metodos específicos.
             if (objeto instanceof Edificio) {
                 Edificio edificio = (Edificio) objeto;
                 System.out.println(edificio);
