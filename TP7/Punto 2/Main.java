@@ -1,27 +1,5 @@
-/**
-    El método obtener_costo() viola el Principio de Abierto/Cerrado (OCP) 
-    porque utiliza una estructura condicional (if/elif/else) ligada a valores
-    específicos para determinar el comportamiento según el tipo de correo.
-
-    Razones de la violación:
-     - Falta de cierre frente a modificación: 
-        Cada vez que la empresa sume un nuevo proveedor (como "DHL") 
-        o elimine uno existente, es obligatorio editar directamente el 
-        código interno de la clase CalculadoraEnvios para agregar 
-        una nueva rama elif.
-     - Riesgo de regresión: Modificar una clase que ya funciona e 
-        impacta la lógica existente incrementa el riesgo de introducir 
-        errores inesperados (bugs) en proveedores que ya estaban 
-        testeados y operativos.
-     - Alto acoplamiento: La calculadora conoce 
-        los detalles concretos y las fórmulas de 
-        cálculo de cada servicio de mensajería, 
-        centralizando responsabilidades que deberían 
-        estar delegadas a cada proveedor.
- */
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 abstract class Envio {
     private double peso;
@@ -37,11 +15,7 @@ abstract class Envio {
     public abstract double obtenerCosto();
 }
 
-interface CalculadoraEnvios {
-    double obtenerCosto();
-}
-
-class OCAEnvio extends Envio implements CalculadoraEnvios {
+class OCAEnvio extends Envio {
     public OCAEnvio(double peso) {
         super(peso);
     }
@@ -52,7 +26,7 @@ class OCAEnvio extends Envio implements CalculadoraEnvios {
     }
 }
 
-class FedExEnvio extends Envio implements CalculadoraEnvios {
+class FedExEnvio extends Envio{
     public FedExEnvio(double peso) {
         super(peso);
     }
@@ -63,7 +37,7 @@ class FedExEnvio extends Envio implements CalculadoraEnvios {
     }
 }
 
-class AndreaniEnvio extends Envio implements CalculadoraEnvios {
+class AndreaniEnvio extends Envio {
     public AndreaniEnvio(double peso) {
         super(peso);
     }
