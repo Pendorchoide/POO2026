@@ -1,10 +1,9 @@
+import descuento.concreto.*;
+import factura.*;
+import impresor.adaptador.ImpresorConsolaAdapter;
+import impresor.puerto.PuertoSalida;
 import iva.*;
 import producto.*;
-import factura.*;
-import descuento.interfaz.Descuento;
-import descuento.concreto.*;
-import impresor.puerto.PuertoSalida;
-import impresor.adaptador.ImpresorConsolaAdapter;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,9 +34,7 @@ public class Main {
         facturaB.agregarLinea(lineaMonitores);
         facturaB.agregarLinea(lineaServicios);
         facturaB.agregarLinea(lineaLeches);
-
-        Descuento descuentoJubilados = new DescuentoJubilados();
-        facturaA.agregarDescuento(descuentoJubilados);
+        facturaB.agregarDescuento(new DescuentoJubilados());
 
         PuertoSalida impresor = new ImpresorConsolaAdapter();
         impresor.imprimir(facturaA);

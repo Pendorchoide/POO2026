@@ -1,9 +1,9 @@
 package factura;
 
+import descuento.interfaz.Descuento;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import descuento.interfaz.Descuento;
 
 public class Factura {
     private final TipoFactura tipo;
@@ -16,33 +16,30 @@ public class Factura {
 
     public TipoFactura getTipo() { return this.tipo; }
     public List<LineaFactura> getLineas() { return Collections.unmodifiableList(this.lineas); }
+    public List<Descuento> getDescuentos() { return Collections.unmodifiableList(this.descuentos); }
 
     public double getNeto() {
-        double netoLineas = lineas.stream()
-            .mapToDouble(LineaFactura::getNeto)
+        return lineas.stream()
+            .mapToDouble(linea -> linea.getNetoConDescuentos(this.descuentos))
             .sum();
-
-        double descuentoGlobal = this.descuentos.stream()
-            .mapToDouble(d -> d.aplicar(netoLineas))
-            .sum();
-
-        return Math.max(0.0, netoLineas - descuentoGlobal);
     }
 
     public double getBruto() {
-        double brutoLineas = lineas.stream()
-            .mapToDouble(LineaFactura::getBruto)
+        return lineas.stream()
+            .mapToDouble(linea -> linea.getBrutoConDescuentos(this.descuentos))
             .sum();
-
-        double descuentoGlobal = this.descuentos.stream()
-            .mapToDouble(d -> d.aplicar(brutoLineas))
-            .sum();
-
-        return Math.max(0.0, brutoLineas - descuentoGlobal);
     }
 
     public double getTotalIVA() {
-        return getBruto() - getNeto();
+        return lineas.stream()
+            .mapToDouble(linea -> linea.getIvaConDescuentos(this.descuentos))
+            .sum();
+    }
+
+    public double getDescuentoTotal() {
+        return lineas.stream()
+            .mapToDouble(linea -> linea.getDescuentoTotalConDescuentos(this.descuentos))
+            .sum();
     }
 
     public void agregarLinea(LineaFactura linea) {

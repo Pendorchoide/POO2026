@@ -1,6 +1,7 @@
 package impresor.adaptador;
 
 import factura.Factura;
+import factura.TipoFactura;
 import impresor.puerto.PuertoSalida;
 
 public class ImpresorConsolaAdapter implements PuertoSalida {
@@ -20,7 +21,7 @@ public class ImpresorConsolaAdapter implements PuertoSalida {
         System.out.println(separador);
 
         factura.getLineas().forEach(linea -> {
-            double descuentoLinea = linea.getNetoSinDescuento() - linea.getNeto();
+            double descuentoLinea = linea.getNetoSinDescuento() - linea.getNetoConDescuentos(factura.getDescuentos());
             double porcentajeIva = linea.getProducto().getTasaIva().getValor() * 100;
 
             System.out.printf(formatoFila,
@@ -29,15 +30,23 @@ public class ImpresorConsolaAdapter implements PuertoSalida {
                 linea.getProducto().getNeto(),
                 descuentoLinea,
                 porcentajeIva,
-                linea.getNeto()
+                linea.getNetoConDescuentos(factura.getDescuentos())
             );
         });
 
         System.out.println(separador);
 
-        System.out.printf(formatoPie, "SUBTOTAL NETO:", factura.getNeto());
-        System.out.printf(formatoPie, "TOTAL IVA:", factura.getTotalIVA());
-        System.out.printf(formatoPie, "TOTAL BRUTO (A PAGAR):", factura.getBruto());
+        if (factura.getTipo() == TipoFactura.A) {
+            System.out.printf(formatoPie, "SUBTOTAL NETO:", factura.getNeto());
+            System.out.printf(formatoPie, "TOTAL IVA:", factura.getTotalIVA());
+            System.out.printf(formatoPie, "TOTAL FINAL:", factura.getBruto());
+        } else {
+            System.out.printf(formatoPie, "TOTAL NETO:", factura.getNeto());
+            System.out.printf(formatoPie, "TOTAL IVA:", factura.getTotalIVA());
+            System.out.printf(formatoPie, "TOTAL FINAL (PRECIO ÚNICO):", factura.getBruto());
+            System.out.printf(formatoPie, "DESCUENTO TOTAL:", factura.getDescuentoTotal());
+        }
+
         System.out.println(separador + "\n");
     }
 }

@@ -2,7 +2,7 @@ package iva;
 
 public enum TasaIva {
     GENERAL(0.21),
-    REDUCIDA(0.15),
+    REDUCIDA(0.105),
     ADICIONAL(0.27),
     EXENTO(0.0);
 
