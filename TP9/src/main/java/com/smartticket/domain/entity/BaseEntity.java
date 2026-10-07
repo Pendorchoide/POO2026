@@ -1,5 +1,6 @@
 package com.smartticket.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,10 +16,14 @@ import java.time.Instant;
 /**
  * Identidad y auditoria comun a todas las entidades.
  * Unica responsabilidad: no repetir id/createdAt/updatedAt en cada entidad.
+ *
+ * <p>{@code hibernateLazyInitializer} es ruido que Jackson expone al serializar un
+ * proxy LAZY; se descarta aca una sola vez y alcanza a todas las subclases.</p>
  */
 @Getter
 @Setter
 @MappedSuperclass
+@JsonIgnoreProperties({"hibernateLazyInitializer", "class"})
 public abstract class BaseEntity {
 
     @Id

@@ -75,10 +75,28 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- MockMvc. En Spring Boot 4 salio de spring-boot-test-autoconfigure
+             a este starter: sin el, @AutoConfigureMockMvc no existe. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Desde JDK 23 javac NO ejecuta procesamiento de anotaciones
+                         implicitamente: sin -proc:full Lombok nunca genera
+                         getters/setters y el build revienta con "cannot find symbol". -->
+                    <proc>full</proc>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

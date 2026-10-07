@@ -1,9 +1,11 @@
 package com.smartticket.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +24,7 @@ import java.util.List;
 @Table(name = "lugares")
 public class Lugar extends BaseEntity {
 
+    @NotBlank(message = "el nombre del lugar es obligatorio")
     @Column(nullable = false, length = 120)
     private String nombre;
 
@@ -31,11 +34,16 @@ public class Lugar extends BaseEntity {
     @Column(length = 80)
     private String ciudad;
 
-    /** Un Lugar tiene multiples Sectores. Capacidad total = suma de capacidades. */
+    /**
+     * Un Lugar tiene multiples Sectores. Capacidad total = suma de capacidades.
+     * {@code @JsonIgnore} corta el ciclo Lugar <-> Sector al serializar.
+     */
+    @JsonIgnore
     @OneToMany(mappedBy = "lugar")
     private List<Sector> sectores = new ArrayList<>();
 
-    /** Un Lugar hosts multiples Eventos. */
+    /** Un Lugar aloja multiples Eventos. */
+    @JsonIgnore
     @OneToMany(mappedBy = "lugar")
     private List<Evento> eventos = new ArrayList<>();
 }
