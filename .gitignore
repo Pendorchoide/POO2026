@@ -1,2 +1,25 @@
 out
 *.class
+
+# --- Maven ---
+target/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.iml
+.settings/
+.classpath
+.project
+nbproject/private/
+*.nbproject
+
+# --- Bases de datos H2 en archivo ---
+*.mv.db
+*.trace.db
+*.lock.db
+
+# --- Sistema ---
+Thumbs.db
+.DS_Store
+desktop.ini
