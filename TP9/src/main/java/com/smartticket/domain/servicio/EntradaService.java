@@ -8,7 +8,6 @@ import com.smartticket.domain.repository.EntradaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -57,26 +56,6 @@ public class EntradaService {
             throw new ConflictoDeEstadoException("Ya existe una entrada con el QR " + entrada.getQrCode());
         }
         entrada.setFechaIngreso(null);
-        return entradaRepository.save(entrada);
-    }
-
-    /**
-     * Registra el ingreso al estadio. Solo una entrada EMITIDA puede escanearse;
-     * una DISPONIBLE no fue pagada y una UTILIZADA ya no vuelve a entrar.
-     */
-    @Transactional
-    public Entrada registrarIngreso(Long id) {
-        Entrada entrada = buscarPorId(id);
-        if (entrada.getEstado() == EstadoTicket.UTILIZADA) {
-            throw new ConflictoDeEstadoException(
-                    "La entrada " + id + " ya fue utilizada a las " + entrada.getFechaIngreso());
-        }
-        if (entrada.getEstado() == EstadoTicket.DISPONIBLE) {
-            throw new ConflictoDeEstadoException(
-                    "La entrada " + id + " aun no fue emitida: no puede ingresar");
-        }
-        entrada.setEstado(EstadoTicket.UTILIZADA);
-        entrada.setFechaIngreso(Instant.now());
         return entradaRepository.save(entrada);
     }
 

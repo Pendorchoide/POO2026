@@ -2,6 +2,7 @@ package com.smartticket.api;
 
 import com.smartticket.api.dto.IniciarPagoRequest;
 import com.smartticket.api.dto.IniciarPagoResponse;
+import com.smartticket.domain.servicio.PagoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,24 +14,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * CU 02 - Inicio de pago de una venta.
- * Estructura lista: contrato HTTP definido, logica pendiente de implementacion.
+ * CU 02 - Procesamiento de pago y emision de entradas.
+ *
+ * <p>SRP: el controller no chequea stock, no llama a la pasarela y no cambia
+ * estados. Recibe el pedido, delega en {@link PagoService} y devuelve 201.</p>
  */
 @RestController
 @RequestMapping("/api/v1/pagos")
-@Tag(name = "Pagos", description = "Inicio y confirmacion del pago de una venta")
+@Tag(name = "Pagos", description = "Pago de entradas y emision de los QR de acceso")
 public class PagoController {
 
+    private final PagoService pagoService;
+
+    public PagoController(PagoService pagoService) {
+        this.pagoService = pagoService;
+    }
+
     @Operation(
-            summary = "Inicia el pago de una venta pendiente",
-            description = "Registra el medio de pago, pide el checkout a la pasarela y devuelve "
-                    + "el token y la URL para que el Cliente complete la operacion.")
-    @ApiResponse(responseCode = "201", description = "Pago iniciado contra la pasarela")
-    @ApiResponse(responseCode = "404", description = "Venta o cliente inexistente")
-    @ApiResponse(responseCode = "409", description = "La venta no esta en PENDIENTE o la reserva caduco")
+            summary = "Paga y emite las entradas",
+            description = "Valida disponibilidad, consulta la pasarela simulada y, si esta aprueba, "
+                    + "crea la Venta PAGADA y pasa las entradas a EMITIDA devolviendo sus QR.")
+    @ApiResponse(responseCode = "201", description = "Pago aprobado: venta PAGADA con QRs emitidos")
+    @ApiResponse(responseCode = "400", description = "Cantidad de entradas menor o igual a cero")
+    @ApiResponse(responseCode = "402", description = "Pago denegado por la pasarela: no se registro nada")
+    @ApiResponse(responseCode = "404", description = "Cliente, evento o sector inexistente")
+    @ApiResponse(responseCode = "409", description = "Los lugares seleccionados ya no se encuentran disponibles")
     @PostMapping
-    public ResponseEntity<IniciarPagoResponse> iniciarPago(@Valid @RequestBody IniciarPagoRequest request) {
-        // TODO: implementar
-        return ResponseEntity.status(501).build();
+    public ResponseEntity<IniciarPagoResponse> pagar(@Valid @RequestBody IniciarPagoRequest request) {
+        return ResponseEntity.status(201).body(pagoService.pagar(request));
     }
 }

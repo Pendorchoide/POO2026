@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -88,15 +87,6 @@ public class EntradaController {
             @RequestParam Long eventoId,
             @RequestParam Long sectorId) {
         return entradaService.contarDisponibles(eventoId, sectorId);
-    }
-
-    @Operation(summary = "Registra el ingreso al estadio",
-            description = "Pasa la entrada a UTILIZADA y fija fecha_ingreso. Falla si esta DISPONIBLE o ya UTILIZADA.")
-    @ApiResponse(responseCode = "200", description = "Ingreso registrado")
-    @ApiResponse(responseCode = "409", description = "La entrada no puede ingresar")
-    @PatchMapping("/{id}/ingreso")
-    public Entrada registrarIngreso(@PathVariable Long id) {
-        return entradaService.registrarIngreso(id);
     }
 
     @Operation(summary = "Actualiza una entrada")

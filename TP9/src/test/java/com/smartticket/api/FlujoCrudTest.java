@@ -176,11 +176,12 @@ class FlujoCrudTest {
                                 "sector", Map.of("id", sectorId)))))
                 .andExpect(status().isConflict());
 
-        // Una entrada DISPONIBLE todavia no ingreso al estadio.
-        mvc.perform(patch("/api/v1/entradas/" + entradaId + "/ingreso"))
+        // Una entrada DISPONIBLE nunca pudo entrar: la puerta la rechaza como no emitida.
+        mvc.perform(post("/api/v1/acceso/validar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(Map.of("qrCode", qr))))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.mensaje").value(
-                        "La entrada " + entradaId + " aun no fue emitida: no puede ingresar"));
+                .andExpect(jsonPath("$.mensaje").value("Ticket no emitido / Falta de pago"));
 
         mvc.perform(get("/api/v1/entradas/disponibles")
                         .param("eventoId", String.valueOf(eventoId))
@@ -202,6 +203,7 @@ class FlujoCrudTest {
         List<String> requeridos = List.of(
                 "/api/v1/lugares", "/api/v1/sectores", "/api/v1/eventos",
                 "/api/v1/entradas", "/api/v1/clientes", "/api/v1/ventas",
+                "/api/v1/precios-evento", "/api/v1/acceso/validar",
                 "/api/v1/cotizaciones", "/api/v1/pagos");
         for (String path : requeridos) {
             assertThat(doc)

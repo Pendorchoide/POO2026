@@ -3,18 +3,27 @@ package com.smartticket.api.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 
-@Schema(description = "Cotizacion calculada con precios del evento y disponibilidad real por sector")
+/**
+ * Resultado de la cotizacion. Es una operacion de SOLO LECTURA: no crea venta
+ * ni reserva entradas. La venta nace recien al pagar (HU2).
+ */
+@Schema(description = "Cotizacion calculada con los precios fijados por la productora y la disponibilidad real")
 public record CotizacionResponse(
 
         @Schema(example = "1") Long eventoId,
-        @Schema(example = "Recital en el Estadio") String eventoNombre,
-        @Schema(description = "Id de la venta creada en estado PENDIENTE", example = "10") Long ventaId,
-        @Schema(example = "PENDIENTE") String estadoVenta,
-        @Schema(example = "45000.00") BigDecimal total,
-        @Schema(description = "Instante en que caduca la reserva de las entradas") Instant expiresAt,
-        @Schema(description = "Detalle por sector") List<LineaCotizacionResponse> lineas
+        @Schema(example = "Rock Fest") String eventoNombre,
+        @Schema(example = "1") Long lugarId,
+        @Schema(example = "Estadio Unico") String lugarNombre,
+
+        @Schema(description = "Suma de los subtotales por sector", example = "24000.00")
+        BigDecimal subtotal,
+
+        @Schema(description = "Costo total exacto de la compra", example = "24000.00")
+        BigDecimal total,
+
+        @Schema(description = "Detalle por sector, con precio unitario y disponibilidad consultada")
+        List<LineaCotizacionResponse> lineas
 ) {
 }

@@ -1,7 +1,9 @@
 package com.smartticket.api;
 
 import com.smartticket.domain.excepcion.ConflictoDeEstadoException;
+import com.smartticket.domain.excepcion.PagoRechazadoException;
 import com.smartticket.domain.excepcion.RecursoNoEncontradoException;
+import com.smartticket.domain.excepcion.ValidacionDeNegocioException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,6 +17,9 @@ import java.util.Map;
 /**
  * Traduce las excepciones del dominio a respuestas HTTP con cuerpo predecible.
  * Sin esto, Spring devuelve un 500 generico cuando falta un recurso.
+ *
+ * <p>Es la unica pieza que conoce HTTP dentro de toda la capa de dominio: los
+ * services lanzan excepciones con significado y aca se mapeean a codigos.</p>
  */
 @RestControllerAdvice
 public class ManejadorDeExcepciones {
@@ -27,6 +32,18 @@ public class ManejadorDeExcepciones {
     @ExceptionHandler(ConflictoDeEstadoException.class)
     public ResponseEntity<Map<String, Object>> conflicto(ConflictoDeEstadoException ex) {
         return construir(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    /** Regla de negocio invalida detectada por un service (cantidad <= 0, sector fuera del evento...). */
+    @ExceptionHandler(ValidacionDeNegocioException.class)
+    public ResponseEntity<Map<String, Object>> validacionDeNegocio(ValidacionDeNegocioException ex) {
+        return construir(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** La pasarela dijo NO: nada se persistio. */
+    @ExceptionHandler(PagoRechazadoException.class)
+    public ResponseEntity<Map<String, Object>> pagoRechazado(PagoRechazadoException ex) {
+        return construir(HttpStatus.PAYMENT_REQUIRED, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
